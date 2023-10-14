@@ -22,7 +22,8 @@ Route::middleware('api')->get('/user', function (Request $request) {
     return $request->user();
 });
 //Rotas para eventos
-Route::apiResource('evento', EventoController::class)->middleware('auth');
+Route::get('evento', [EventoController::class, 'index']);
+Route::apiResource('evento', EventoController::class)->middleware('auth')->except('index');
 Route::get('meuseventos', [EventoController::class, 'meusEventos'])->middleware('auth');
 
 //rotas para usuario

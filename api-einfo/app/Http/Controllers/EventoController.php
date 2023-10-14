@@ -7,27 +7,38 @@ use App\Http\Requests\UpdateEventoRequest;
 use App\Models\Evento;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EventoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Evento::all();
+        if($request->has('nome')){
+            $nome = $request->nome;
+            return Evento::where('nome', 'like', '%'.$nome.'%')->get();
+        } else{
+            return Evento::all();
+        }
+        
     }
 
     public function store(StoreEventoRequest $request)
     {
         $user_id = auth()->user()->id;
+
+        $imagem = $request->file('imagem');
+        $nome_imagem = $imagem->store('imagens','public');
+
         //$request->validate();
         Evento::create([
             'user_id'=>$user_id,
             'nome'=> $request->nome,
             'descricao'=> $request->descricao,
             'quantidade'=> $request ->quantidade,
-            'imagem'=> 'imagem teste por enquanto',//$request->imagem
+            'imagem'=> $nome_imagem,
             'local'=> $request->local,
             'data'=> $request->data,
             'horario'=>  $request->horario
@@ -54,9 +65,24 @@ class EventoController extends Controller
      */
     public function update(UpdateEventoRequest $request, $id)
     {   
+        $user_id = auth()->user()->id;
+        if($request->has('imagem')){
+            $imagem = $request->file('imagem');
+            $nome_imagem = $imagem->store('imagens','public');
+
+            try{
+                $evento = Evento::findOrFail($id);
+                Storage::disk('public')->delete($evento->imagem);
+                $evento->update(['imagem' => $nome_imagem]);
+            }catch(\Exception $e){
+                return response()->json(['erro' => 'deu um erro ai'], 404);
+            }
+            
+        }
+
         try{
             $evento = Evento::findOrFail($id);
-            $evento->update($request->validated());
+            $evento->update($request->all());
         }catch(\Exception $e){
             return response()->json(['erro' => 'id nao existe'], 404);
         }
@@ -70,6 +96,7 @@ class EventoController extends Controller
     {   
         try{
             $evento = Evento::findOrFail($id);
+            Storage::disk('public')->delete($evento->imagem);
             $evento->delete();
         }catch(\Exception $e){
             return response()->json(['erro' => 'id nao existe'],404);
