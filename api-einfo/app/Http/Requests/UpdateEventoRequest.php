@@ -19,33 +19,33 @@ class UpdateEventoRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(): array
-    {
-        $rules = [
-            'nome' => ['required', 'unique:eventos,nome'.$this->id],
-            'descricao' => 'required',
-            'quantidade' => 'required',
-            'local' => 'required',
-            'data' => 'required',
-        ];
+//     public function rules(): array
+//     {
+//         $rules = [
+//             'nome' => ['required', 'unique:eventos,nome'.$this->id],
+//             'descricao' => 'required',
+//             'quantidade' => 'required',
+//             'local' => 'required',
+//             'data' => 'required',
+//         ];
 
-        if($this->method() === "PATCH"){
-            foreach($rules as $input => $rule){
-                if(array_key_exists($input, $this->all())){
-                    $rulesdinamica[$input] = $rule;
-                }
-            }
-            return $rulesdinamica;
-        } else{
-            return $rules;
-        }
-    }
+//         if($this->method() === "PATCH"){
+//             foreach($rules as $input => $rule){
+//                 if(array_key_exists($input, $this->all())){
+//                     $rulesdinamica[$input] = $rule;
+//                 }
+//             }
+//             return $rulesdinamica;
+//         } else{
+//             return $rules;
+//         }
+//     }
 
-    public function messages() :array
-    {
-        return [
-            'required' => 'O campo :attribute não pode ficar vazio',
-            'nome.unique' => 'O nome do evento ja existe'
-        ];
-    }
+//     public function messages() :array
+//     {
+//         return [
+//             'required' => 'O campo :attribute não pode ficar vazio',
+//             'nome.unique' => 'O nome do evento ja existe'
+//         ];
+//     }
 }
