@@ -61,4 +61,18 @@ class InscricoesController extends Controller
         $user_id = auth()->user()->id;
         return Inscricoes::where('user_id', '=', $user_id)->get();
     }
+
+    public function verificainscricao($id, $id_usuario)
+    {
+        $user_id = auth()->user()->id;
+        $inscricao = Inscricoes::where('user_id', '=', $id_usuario)->where('evento_id','=', $id)->first();
+
+        if ($inscricao) {
+            // O usuário está inscrito no evento
+            return response()->json(['inscrito' => true]);
+        } else {
+            // O usuário não está inscrito no evento
+            return response()->json(['inscrito' => false]);
+        }
+    }
 }

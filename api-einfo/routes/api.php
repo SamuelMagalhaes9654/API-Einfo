@@ -6,6 +6,8 @@ use App\Http\Controllers\EventoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InscricoesController;
+use App\Http\Controllers\AvaliacoesController;
+use App\Models\Avaliacoes;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,7 @@ Route::middleware('api')->get('/user', function (Request $request) {
 Route::get('evento', [EventoController::class, 'index']);
 Route::apiResource('evento', EventoController::class)->middleware('auth')->except('index');
 Route::get('meuseventos', [EventoController::class, 'meusEventos'])->middleware('auth');
+Route::post('chat', [EventoController::class, 'chat']);
 
 //rotas para usuario
 Route::apiResource('usuario', UserController::class);
@@ -38,3 +41,11 @@ Route::post('me', [AuthController::class, 'me'])->middleware('auth');
 //rotas para inscricoes
 Route::apiResource('inscricao', InscricoesController::class)->middleware('auth');
 Route::get('eventosinscritos', [InscricoesController::class, 'minhasInscricoes'])->middleware('auth');
+Route::get('verificarinscricao/{evento_id}', [InscricoesController::class, 'verificainscricao']);
+
+//rotas para avaliacoes
+Route::get('avaliacoes', [AvaliacoesController::class, 'index']);
+Route::get('avaliar/{evento_id}', [AvaliacoesController::class, 'avaliar']);
+Route::post('avaliacoes', [AvaliacoesController::class, 'store'])->middleware('auth');
+//Route::apiResource('avaliacao', AvaliacoesController::class);
+
