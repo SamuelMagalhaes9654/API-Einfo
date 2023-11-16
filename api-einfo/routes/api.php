@@ -47,6 +47,7 @@ Route::get('inscritos-evento/{evento_id}', [InscricoesController::class, 'inscri
 
 //rotas para registrar inscrição
 Route::post('registrar-presenca/{inscricao_id}', [PresencaController::class, 'registrarPresenca'])->middleware('auth');
+
 //rotas para avaliacoes
 Route::get('avaliacoes', [AvaliacoesController::class, 'index']);
 Route::get('avaliar/{evento_id}', [AvaliacoesController::class, 'avaliar']);
