@@ -6,8 +6,10 @@ use App\Http\Requests\StoreEventoRequest;
 use App\Http\Requests\UpdateEventoRequest;
 use App\Models\Evento;
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class EventoController extends Controller
 {
@@ -112,5 +114,25 @@ class EventoController extends Controller
         $user_id = auth()->user()->id;
         return Evento::where('user_id', 'like', $user_id)->get();
         
+    }
+
+    public function chat(Request $request)
+    {
+        $message = $request->input('message');
+
+        $client = new Client();
+        $response = $client->post('https://api.openai.com/v1/chat/completions', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+            ],
+            'json' => [
+                "model" => "gpt-3.5-turbo",
+                "messages" => json_decode('[{"role": "user", "content": "'.$message.'"}]', true),
+                "temperature" => 0.7
+            ],
+        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
+        return response()->json($result['choices'][0]['message']['content']);
     }
 }

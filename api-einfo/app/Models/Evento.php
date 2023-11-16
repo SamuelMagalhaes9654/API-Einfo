@@ -28,4 +28,9 @@ class Evento extends Model
     {
         return $this->hasMany('App\Models\Inscricoes');
     }
+
+    public function avaliacoes() 
+    {
+        return $this->hasMany('App\Models\Avaliacoes');
+    }
 }

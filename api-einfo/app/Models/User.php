@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'descriptor',
     ];
 
     /**
@@ -42,6 +43,7 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'descriptor' => 'array',
     ];
 
     public function getJWTIdentifier()
@@ -67,5 +69,10 @@ class User extends Authenticatable implements JWTSubject
     public function inscricoes() 
     {
         return $this->hasMany('App\Models\Inscricoes');
+    }
+
+    public function avaliacoes() 
+    {
+        return $this->hasMany('App\Models\Avaliacoes');
     }
 }
