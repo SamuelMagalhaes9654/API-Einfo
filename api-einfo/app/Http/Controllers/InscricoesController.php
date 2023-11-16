@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Inscricoes;
 use App\Http\Requests\StoreInscricoesRequest;
 use App\Http\Requests\UpdateInscricoesRequest;
+use Illuminate\Support\Facades\DB;
 
 class InscricoesController extends Controller
 {
@@ -74,5 +75,11 @@ class InscricoesController extends Controller
             // O usuário não está inscrito no evento
             return response()->json(['inscrito' => false]);
         }
+    }
+
+    public function inscritosEvento($evento_id)
+    {
+        $inscritos = Inscricoes::select('inscricoes.*','users.name', 'users.email', 'users.descriptor')->where('evento_id', $evento_id)->join('users', 'inscricoes.user_id', '=', 'users.id')->get();
+        return $inscritos;
     }
 }

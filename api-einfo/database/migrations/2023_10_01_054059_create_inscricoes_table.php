@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('evento_id');
+            $table->boolean('presente')->default(false);
             $table->timestamps();
             
             

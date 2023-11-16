@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InscricoesController;
 use App\Http\Controllers\AvaliacoesController;
+use App\Http\Controllers\PresencaController;
 use App\Models\Avaliacoes;
 
 /*
@@ -42,7 +43,10 @@ Route::post('me', [AuthController::class, 'me'])->middleware('auth');
 Route::apiResource('inscricao', InscricoesController::class)->middleware('auth');
 Route::get('eventosinscritos', [InscricoesController::class, 'minhasInscricoes'])->middleware('auth');
 Route::get('verificarinscricao/{evento_id}', [InscricoesController::class, 'verificainscricao']);
+Route::get('inscritos-evento/{evento_id}', [InscricoesController::class, 'inscritosEvento'])->middleware('auth');
 
+//rotas para registrar inscrição
+Route::post('registrar-presenca/{inscricao_id}', [PresencaController::class, 'registrarPresenca'])->middleware('auth');
 //rotas para avaliacoes
 Route::get('avaliacoes', [AvaliacoesController::class, 'index']);
 Route::get('avaliar/{evento_id}', [AvaliacoesController::class, 'avaliar']);

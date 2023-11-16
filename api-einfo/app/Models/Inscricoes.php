@@ -11,7 +11,8 @@ class Inscricoes extends Model
 
     protected $fillable = [
         'user_id',
-        'evento_id'
+        'evento_id',
+        'presente'
     ];
 
     public function usuario()

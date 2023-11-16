@@ -100,12 +100,12 @@ class AvaliacoesController extends Controller
         [ ] 4
         [ ] 5
         
-        5 Como foi a facilidade de registro e check-in?
-        [ ] Muito difícil
-        [ ] Difícil
-        [ ] Neutro
-        [ ] Fácil
-        [ ] Muito fácil 
+        5 Como foi a facilidade de registro e check-in? (1 = muito difícil, 5 = muito facil)
+        [ ] 1
+        [ ] 2
+        [ ] 3
+        [ ] 4
+        [ ] 5 
         
         6 Houve tempo suficiente para perguntas e respostas?
         [ ] Sim
