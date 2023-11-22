@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->text('descriptor');//comentario para o git reconhecer 
+            $table->text('descriptor')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

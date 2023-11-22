@@ -44,6 +44,7 @@ Route::apiResource('inscricao', InscricoesController::class)->middleware('auth')
 Route::get('eventosinscritos', [InscricoesController::class, 'minhasInscricoes'])->middleware('auth');
 Route::get('verificarinscricao/{evento_id}', [InscricoesController::class, 'verificainscricao']);
 Route::get('inscritos-evento/{evento_id}', [InscricoesController::class, 'inscritosEvento'])->middleware('auth');
+Route::get('certificado/{evento_id}', [InscricoesController::class, 'gerarCertificado'])->middleware('auth');
 
 //rotas para registrar inscrição
 Route::post('registrar-presenca/{inscricao_id}', [PresencaController::class, 'registrarPresenca'])->middleware('auth');

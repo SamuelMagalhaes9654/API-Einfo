@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Inscricoes;
 use App\Http\Requests\StoreInscricoesRequest;
 use App\Http\Requests\UpdateInscricoesRequest;
+use App\Models\Evento;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InscricoesController extends Controller
 {
@@ -63,10 +65,10 @@ class InscricoesController extends Controller
         return Inscricoes::where('user_id', '=', $user_id)->get();
     }
 
-    public function verificainscricao($id, $id_usuario)
+    public function verificainscricao($id)
     {
         $user_id = auth()->user()->id;
-        $inscricao = Inscricoes::where('user_id', '=', $id_usuario)->where('evento_id','=', $id)->first();
+        $inscricao = Inscricoes::where('user_id', '=', $user_id)->where('evento_id','=', $id)->first();
 
         if ($inscricao) {
             // O usuário está inscrito no evento
@@ -81,5 +83,27 @@ class InscricoesController extends Controller
     {
         $inscritos = Inscricoes::select('inscricoes.*','users.name', 'users.email', 'users.descriptor')->where('evento_id', $evento_id)->join('users', 'inscricoes.user_id', '=', 'users.id')->get();
         return $inscritos;
+    }
+
+    public function userPresente($inscricao){
+        return Inscricoes::where('presente', '=', true)->get();
+    }
+
+    public function gerarCertificado($evento_id)
+    {
+        $user_id = auth()->user()->id;
+        $inscricao = Inscricoes::where('user_id', '=', $user_id)->where('evento_id','=', $evento_id)->first();
+        $evento = Evento::where('id', '=', $evento_id)->first();
+        $user = auth()->user();
+
+
+        if($inscricao->presente){
+            $pdf = Pdf::loadView('Certificado',['evento' => $evento, 'user' => $user])->setPaper('a4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return response()->json(['error' => 'O usuário não esteve presente no evento']);
+        }
+
+        
     }
 }

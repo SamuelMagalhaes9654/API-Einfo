@@ -45,7 +45,7 @@ class EventoController extends Controller
             'data'=> $request->data,
             'horario'=>  $request->horario
         ]);
-        return "Evento criado com sucesso";
+        return response()->json(['success' => 'Evento criado com sucesso'], 201);
     }
 
     /**
@@ -114,25 +114,5 @@ class EventoController extends Controller
         $user_id = auth()->user()->id;
         return Evento::where('user_id', 'like', $user_id)->get();
         
-    }
-
-    public function chat(Request $request)
-    {
-        $message = $request->input('message');
-
-        $client = new Client();
-        $response = $client->post('https://api.openai.com/v1/chat/completions', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
-            ],
-            'json' => [
-                "model" => "gpt-3.5-turbo",
-                "messages" => json_decode('[{"role": "user", "content": "'.$message.'"}]', true),
-                "temperature" => 0.7
-            ],
-        ]);
-        $result = json_decode($response->getBody()->getContents(), true);
-        return response()->json($result['choices'][0]['message']['content']);
     }
 }

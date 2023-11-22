@@ -18,7 +18,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         User::create($request->all());
-        return "Usuario cadastrado com sucesso";
+        return response()->json(['success' => 'Usuário cadastrado com sucess0'], 201);
     }
 
     /**
@@ -58,7 +58,7 @@ class UserController extends Controller
             $usuario = User::findOrFail($id);
             $usuario->delete();
         }catch(\Exception $e){
-            return response()->json(['erro' => 'id nao existe'],404);
+            return response()->json(['erro' => 'id nao existe'], 404);
         }
         
     }
